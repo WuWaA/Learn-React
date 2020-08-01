@@ -22,6 +22,7 @@ class Board extends React.Component
         // onWowClick被调用时, 调用游戏的onCoolClick
         return (
             <Square
+                key={ i }
                 value={ this.props.squares[ i ] }
                 onWowClick={ () => this.props.onCoolClick( i ) }
             />
@@ -40,10 +41,10 @@ class Board extends React.Component
             {
                 rows.push( this.renderSquare( ( i * 3 ) + j ) );
             }
-            board.push( <div className={ "board-row row-" + i }>{ rows }</div> );
+            board.push( <div key={ i } className={ "board-row row-" + i }>{ rows }</div> );
         }
         return (
-            <div>{ board }</div>
+            <div key="board">{ board }</div>
         );
     }
 }
@@ -106,7 +107,7 @@ class Game extends React.Component
         const winner = calculateWinner( current.squares );
         const moves = history.map( ( step, move ) =>
         {
-            const row = 1 + Math.floor(this.state.location[ move - 1 ] / 3);
+            const row = 1 + Math.floor( this.state.location[ move - 1 ] / 3 );
             const col = 1 + this.state.location[ move - 1 ] % 3;
             let desc = move ? ( "Go to move #" + move + " (row " + row + ", col " + col + ")" ) : "Go to game start";
             return (
