@@ -48,3 +48,13 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+/* 并非真正实现按下按钮后更改样式 */
+button:active, button:focus {
+  font-weight: bold;
+}
+
+/* 这里才是通过更改按钮的className来实现更改样式 */
+.selected {
+  font-weight: bold;
+}

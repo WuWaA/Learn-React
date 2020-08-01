@@ -49,6 +49,32 @@ class Board extends React.Component
     }
 }
 
+class HistoryButton extends React.Component
+{
+
+    constructor ( props )
+    {
+        super( props );
+        this.state = { clsName: this.props.zzz };
+    }
+
+    btnClick ( event )
+    {
+        event(); // 可有可无
+        this.setState( {
+            clsName: "selected"
+        } );
+    }
+
+    render ()
+    {
+        return (
+            // 为了调用setState才这么写, 应该存在更优雅的方法
+            <button className={ this.state.clsName } onClick={ () => this.btnClick( this.props.yyy ) }>{ this.props.xxx }</button>
+        );
+    }
+}
+
 // 游戏包含棋盘和本局游戏状态
 class Game extends React.Component
 {
@@ -98,6 +124,11 @@ class Game extends React.Component
             stepNumber: step,
             xIsNext: step % 2 === 0
         } );
+        // console.log( btn );
+        // btn.setState( {
+        //     clsName: "selected"
+        // } );
+        // btn.clsName = "selected";
     }
 
     render ()
@@ -109,9 +140,11 @@ class Game extends React.Component
         {
             const row = 1 + Math.floor( this.state.location[ move - 1 ] / 3 );
             const col = 1 + this.state.location[ move - 1 ] % 3;
-            let desc = move ? ( "Go to move #" + move + " (row " + row + ", col " + col + ")" ) : "Go to game start";
+            const desc = move ? ( "Go to move #" + move + " (row " + row + ", col " + col + ")" ) : "Go to game start";
+            // 传入的props不需要提前声明, 直接在HistoryButton就可以用这里的xxx, yyy, zzz
+            let btn = <HistoryButton xxx={ desc } yyy={ () => this.jumpTo( move ) } zzz={ null } />;
             return (
-                <li key={ move }><button onClick={ () => this.jumpTo( move ) }>{ desc }</button></li>
+                <li key={ move }>{ btn }</li>
             );
         } );
         let status;
