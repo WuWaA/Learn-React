@@ -71,7 +71,7 @@ class HistoryButton extends React.Component
 
         // ! 但是用不React的方法实现了加粗已按下的历史记录按钮
         // console.log( clickedID );
-        for ( let i = 0; i < 9; i++ )
+        for ( let i = 0; i <= 9; i++ )
         {
             if ( document.getElementById( "history-btn-" + i ) )
                 document.getElementById( "history-btn-" + i ).className = "unselected";
