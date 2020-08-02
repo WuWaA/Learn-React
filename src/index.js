@@ -61,9 +61,13 @@ class HistoryButton extends React.Component
     btnClick ( event )
     {
         event(); // 可有可无
-        this.setState( {
-            clsName: "selected"
-        } );
+        // ! 失败了, 因为在Game里我无法更新其他按钮的clsName为null
+        // ! 也就是说所有点过的按钮都会变成加粗
+        // ! 所有历史记录按钮都在moves里, 而moves在render里
+        // ! 所以若想获取所有历史记录按钮, 还需要在Game的state上动手脚
+        // this.setState( {
+        //     clsName: "selected"
+        // } );
     }
 
     render ()
@@ -124,11 +128,6 @@ class Game extends React.Component
             stepNumber: step,
             xIsNext: step % 2 === 0
         } );
-        // console.log( btn );
-        // btn.setState( {
-        //     clsName: "selected"
-        // } );
-        // btn.clsName = "selected";
     }
 
     render ()
