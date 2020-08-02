@@ -115,10 +115,9 @@ class Game extends React.Component
         const cr = hs[ hs.length - 1 ];
         const sq = cr.squares.slice();
         this.state.location.push( i );
+        console.log( hs.length );
         if ( calculateWinner( sq ) || sq[ i ] )
-        {
             return;
-        }
         sq[ i ] = this.state.xIsNext ? "X" : "O";
         this.setState( {
             history: hs.concat( [
@@ -160,7 +159,8 @@ class Game extends React.Component
         } );
         // this.setState( { allMoves: moves } ); // error
         let status;
-        if ( winner ) status = "Winner: " + winner;
+        if ( winner === "draw" ) status = "No winner";
+        else if ( winner ) status = "Winner: " + winner;
         else status = "Next player: " + ( this.state.xIsNext ? "X" : "O" );
 
         // onCoolClick被调用时, 调用游戏的handleClick
@@ -202,7 +202,15 @@ function calculateWinner ( squares )
             return squares[ a ];
         }
     }
-    return null;
+    let counter = 0;
+    for ( let i = 0; i < squares.length; i++ )
+    {
+        console.log( squares[ i ] )
+        console.log( squares[ i ] ? true : false )
+        if ( squares[ i ] )
+            counter++;
+    }
+    return counter === 9 ? "draw" : null;
 }
 
 ReactDOM.render( <Game />, document.getElementById( "root" ) );
