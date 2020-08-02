@@ -58,7 +58,7 @@ class HistoryButton extends React.Component
         this.state = { clsName: this.props.zzz };
     }
 
-    btnClick ( event )
+    btnClick ( event, clickedID )
     {
         event(); // 可有可无
         // ! 失败了, 因为在Game里我无法更新其他按钮的clsName为null
@@ -68,13 +68,22 @@ class HistoryButton extends React.Component
         // this.setState( {
         //     clsName: "selected"
         // } );
+
+        // ! 但是用不React的方法实现了加粗已按下的历史记录按钮
+        // console.log( clickedID );
+        for ( let i = 0; i < 9; i++ )
+        {
+            if ( document.getElementById( "history-btn-" + i ) )
+                document.getElementById( "history-btn-" + i ).className = "unselected";
+        }
+        document.getElementById( "history-btn-" + clickedID ).className = "selected";
     }
 
     render ()
     {
         return (
             // 为了调用setState才这么写, 应该存在更优雅的方法
-            <button className={ this.state.clsName } onClick={ () => this.btnClick( this.props.yyy ) }>{ this.props.xxx }</button>
+            <button id={ "history-btn-" + this.props.id } className={ this.state.clsName } onClick={ () => this.btnClick( this.props.yyy, this.props.id ) }>{ this.props.xxx }</button>
         );
     }
 }
@@ -94,7 +103,8 @@ class Game extends React.Component
             ],
             xIsNext: true,
             stepNumber: 0,
-            location: []
+            location: [],
+            allMoves: null
         };
     }
 
@@ -128,6 +138,8 @@ class Game extends React.Component
             stepNumber: step,
             xIsNext: step % 2 === 0
         } );
+        // console.log( "Step: " + step );
+        // console.log( this.state.history[ step ] );
     }
 
     render ()
@@ -141,11 +153,12 @@ class Game extends React.Component
             const col = 1 + this.state.location[ move - 1 ] % 3;
             const desc = move ? ( "Go to move #" + move + " (row " + row + ", col " + col + ")" ) : "Go to game start";
             // 传入的props不需要提前声明, 直接在HistoryButton就可以用这里的xxx, yyy, zzz
-            let btn = <HistoryButton xxx={ desc } yyy={ () => this.jumpTo( move ) } zzz={ null } />;
+            let btn = <HistoryButton xxx={ desc } yyy={ () => this.jumpTo( move ) } zzz={ "unselected" } id={ move } />;
             return (
                 <li key={ move }>{ btn }</li>
             );
         } );
+        // this.setState( { allMoves: moves } ); // error
         let status;
         if ( winner ) status = "Winner: " + winner;
         else status = "Next player: " + ( this.state.xIsNext ? "X" : "O" );
